@@ -1,5 +1,4 @@
 import { Navbar } from "./Navbar";
-import { EditButton } from '../components/EditButton';
 
 export function Layout(): string {
   return `
@@ -7,7 +6,6 @@ export function Layout(): string {
     ${Navbar}
 
       <main class="min-h-screen w-full flex-1 p-20 md:p-16 px-4">
-      ${EditButton()}
       </main>
 
     </div>
