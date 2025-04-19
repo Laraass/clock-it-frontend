@@ -1,7 +1,11 @@
-import './style.css'
-import { Layout } from './components/Layout'
+import './style.css';
+import { Layout } from './components/Layout';
+import { setupNavbarListeners } from './components/Navbar';
 
-const app = document.querySelector<HTMLDivElement>('#app')!
+const app = document.querySelector<HTMLDivElement>('#app')!;
 
-// Anropa Layout med en tom sträng eller enkel placeholder
-app.innerHTML = Layout('')
+// Rendera Layout
+app.innerHTML = Layout();
+
+// Sätt upp event-lyssnare efter rendering
+setupNavbarListeners();
