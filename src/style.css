@@ -1,2 +1,20 @@
+/* Import Tailwind styles */
 @import "tailwindcss";
 
+@theme {
+    --color-primary: #CAE8FF;
+    --color-primary-crude: #A4D8FF;
+    --color-secondary: #5FA3D7;
+    --color-blue: #050A30;
+    --color-off-white: #EBEBEB;
+    --color-white: #F4F6FC;
+    --color-red: #CE0101;
+    --color-shade-800: #121212;
+    --color-shade-200: #5D5D5D;
+    --color-shade-100: #FFFFFF;
+}
+
+/* Styles */
+body {
+    font-family: "Poppins";
+}
