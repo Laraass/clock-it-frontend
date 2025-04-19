@@ -1,33 +1,31 @@
-// navbarLogic.ts
-
-// Funktion för att hantera öppning/stängning av mobilmenyn
+// Mobile menu functions
 export function toggleMobileMenu(): void {
   const mobileMenu = document.getElementById('navbar-mobile');
   const navbarToggle = document.getElementById('navbar-toggle');
   
   if (mobileMenu && navbarToggle) {
-    const isMenuOpen = mobileMenu.classList.contains('max-h-[500px]');
+    const isMenuOpen = mobileMenu.classList.contains('max-h-32');
     
     if (isMenuOpen) {
-      mobileMenu.classList.remove('max-h-[500px]');
+      mobileMenu.classList.remove('max-h-32');
       mobileMenu.classList.add('max-h-0', 'opacity-0');
     } else {
       mobileMenu.classList.remove('max-h-0', 'opacity-0');
-      mobileMenu.classList.add('max-h-[500px]', 'opacity-100');
+      mobileMenu.classList.add('max-h-32', 'opacity-100');
     }
   }
 }
 
-// Funktion för att hantera klick på navigationsknappar
+// Nav buttons
 export function handleNavClick(event: Event): void {
   const target = event.target as HTMLElement;
   if (target && target.dataset.nav) {
     const navButtons = document.querySelectorAll('.nav-btn');
     
-    // Ta bort 'active' klass från alla knappar
+    // Remove 'active' class
     navButtons.forEach((button) => button.classList.remove('active'));
     
-    // Lägg till 'active' klass på den valda knappen
+    // Add 'active' class on current button
     target.classList.add('active');
   }
 }
