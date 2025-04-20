@@ -1,31 +1,32 @@
-import { Home } from '../views/Home';
-import { Register } from '../views/Register';
-import { SignIn } from '../views/SignIn';
-import { TimeReports } from '../views/TimeReports';
-import { AllTimeReports } from '../views/AllTimeReports';
-import { CreateTimeReport } from '../views/CreateTimeReport';
-import { EditTimeReport } from '../views/EditTimeReport';
-import { SpecificTimeReport } from '../views/SpecificTimeReport';
+import { Home } from "../views/Home";
+import { Register } from "../views/Register";
+import { SignIn } from "../views/SignIn";
+import { TimeReports } from "../views/TimeReports";
+import { AllTimeReports } from "../views/AllTimeReports";
+import { CreateTimeReport } from "../views/CreateTimeReport";
+import { EditTimeReport } from "../views/EditTimeReport";
+import { SpecificTimeReport } from "../views/SpecificTimeReport";
 
 export function getViewByRoute(route: string): string {
   switch (route) {
-    case '/':
+    case "/":
       return Home();
-    case '/register':
+    case "/register":
       return Register();
-    case '/signin':
+    case "/signin":
       return SignIn();
-    case '/timereports':
+    case "/timereports":
       return TimeReports();
-    case '/timereports/all':
+    case "/timereports/all":
       return AllTimeReports();
-    case '/timereports/create':
+    case "/timereports/create":
       return CreateTimeReport();
-    case '/timereports/edit':
+    case "/timereports/edit":
       return EditTimeReport();
-    case '/timereports/specific':
-      return SpecificTimeReport();
+    case route.match(/^\/timereports\/\d+$/)?.input:
+      const id = route.split("/")[2];
+      return SpecificTimeReport(id);
     default:
-      return `<h1 class="text-xl text-shade-800 p-4">404 Page does not exist </h1>`;
+      return `<h1 class="text-xl text-shade-800 p-4">404 Page does not exist</h1>`;
   }
 }
