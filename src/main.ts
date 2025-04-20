@@ -1,11 +1,16 @@
 import './style.css';
 import { Layout } from './components/Layout';
 import { setupNavbarListeners } from './components/Navbar';
+import { handleBackClick } from './utils/backLogic';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
 
-// Rendera Layout
+// Render Layout
 app.innerHTML = Layout();
 
-// Sätt upp event-lyssnare efter rendering
+// Navbar eventListener
 setupNavbarListeners();
+
+// Back eventListener
+const backBtn = document.getElementById('back-button');
+backBtn?.addEventListener('click', handleBackClick);
