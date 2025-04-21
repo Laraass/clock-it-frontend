@@ -6,6 +6,7 @@ import { SignIn } from "./views/SignIn";
 import { Register } from "./views/Register";
 import { Home } from "./views/Home";
 import { TimeReports } from "./views/TimeReports";
+import { AllTimeReports } from "./views/AllTimeReports";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -27,6 +28,9 @@ function renderView() {
     case "#/timereports":
       viewHtml = TimeReports();
       break;
+    case "#/timereports/all":
+      viewHtml = AllTimeReports();
+      break;
   }
 
   app.innerHTML = Layout(viewHtml);
@@ -34,7 +38,9 @@ function renderView() {
   setupNavbarListeners();
 
   // Handle back button
-  document.getElementById("back-button")?.addEventListener("click", handleBackClick);
+  document
+    .getElementById("back-button")
+    ?.addEventListener("click", handleBackClick);
 
   // Handle sign in and register
   if (hash === "" || hash === "#/signin") {
@@ -44,16 +50,28 @@ function renderView() {
   }
 
   if (hash === "" || hash === "#/register") {
-    document.getElementById("register-button")?.addEventListener("click", () => {
-      window.location.hash = "#/";
-    });
+    document
+      .getElementById("register-button")?.addEventListener("click", () => {
+        window.location.hash = "#/";
+      });
   }
 
-  // Handle task routing from Home
+  // Handle menu routing from Home page
   if (hash === "#/") {
     document.getElementById("time-reports")?.addEventListener("click", () => {
       window.location.hash = "#/timereports";
     });
+  }
+
+   // Handle tasks routing from Time reports page
+   if (hash === "#/timereports") {
+    const navigateToView = () => {
+      window.location.hash = "#/timereports/all";
+    };
+
+    document.getElementById("time-reports-all")?.addEventListener("click", navigateToView);
+    document.getElementById("time-reports-update")?.addEventListener("click", navigateToView);
+    document.getElementById("time-reports-delete")?.addEventListener("click", navigateToView);
   }
 }
 
