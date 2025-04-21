@@ -7,7 +7,7 @@ export function Task({ task, id }: TaskProps): string {
   return `
     <div
       id="${id || ""}"
-      class="flex items-center justify-center text-center bg-primary text-shade-800 px-4 py-2 rounded-md border-2 border-secondary
+      class="flex items-center justify-center text-center bg-primary text-shade-800 p-2 rounded-md border-2 border-secondary
              size-32 
              font-medium
              cursor-pointer

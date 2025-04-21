@@ -4,7 +4,7 @@ import { Button } from "../components/Button";
 export function SignIn(): string {
   return `
     <section class="w-full max-w-md mx-auto flex flex-col gap-10">
-      <img src="./clockit_logo.svg" class="mx-auto w-80" />
+      <img src="./clockit_logo.svg" class="mx-auto w-80 pt-6" />
       
       <form class="flex flex-col gap-6">
         ${InputField({
