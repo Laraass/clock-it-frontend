@@ -3,15 +3,45 @@ import { Layout } from "./components/Layout";
 import { setupNavbarListeners } from "./components/Navbar";
 import { handleBackClick } from "./utils/backLogic";
 import { SignIn } from "./views/SignIn";
+import { Register } from "./views/Register";
+// import { Home } from "./views/Home";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
-// Render Layout
-app.innerHTML = Layout(SignIn());
+function renderView() {
+  const hash = window.location.hash;
+  let viewHtml: string;
 
-// Navbar eventListener
-setupNavbarListeners();
+  switch (hash) {
+    case "#/register":
+      viewHtml = Register();
+      break;
+    case "#/signin":
+    default:
+      viewHtml = SignIn();
+      break;
+    // case '#/':
+    //     viewHtml = Home();
+    //     break;
+  }
 
-// Back eventListener
-const backBtn = document.getElementById("back-button");
-backBtn?.addEventListener("click", handleBackClick);
+  app.innerHTML = Layout(viewHtml);
+
+  setupNavbarListeners();
+  document.getElementById("back-button")?.addEventListener("click", handleBackClick);
+
+  if (hash === "" || hash === "#/signin") {
+    document.getElementById("sign-in-button")?.addEventListener("click", () => {
+      window.location.hash = "#/";
+    });
+  }
+
+  if (hash === "" || hash === "#/register") {
+    document.getElementById("register-button")?.addEventListener("click", () => {
+      window.location.hash = "#/";
+    });
+  }
+}
+
+renderView();
+window.addEventListener("hashchange", renderView);

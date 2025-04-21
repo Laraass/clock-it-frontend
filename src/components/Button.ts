@@ -1,6 +1,12 @@
-export function Button(text: string): string {
+type ButtonProps = {
+  text: string;
+  id?: string;
+};
+
+export function Button({ text, id }: ButtonProps): string {
   return `
       <button
+        id="${id || ''}"
         class="text-shade-800 px-4 py-2 rounded-md font-medium bg-primary-crude 
                shadow-[inset_0_0_10px_5px_#7AB5E0] 
                cursor-pointer
@@ -14,3 +20,4 @@ export function Button(text: string): string {
       </button>
     `;
 }
+
