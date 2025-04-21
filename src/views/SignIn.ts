@@ -24,7 +24,7 @@ export function SignIn(): string {
 
         <p class="text-center text-sm">
             Don't have an account? 
-              <a href="/" class="underline cursor-pointer text-shade-800 inline-block hover:scale-102 active:scale-102 transition-transform duration-300">
+              <a href="#/register" class="underline cursor-pointer text-shade-800 inline-block hover:scale-102 active:scale-102 transition-transform duration-300">
                 Register
               </a>
         </p>
