@@ -32,6 +32,8 @@ function renderView() {
   app.innerHTML = Layout(viewHtml);
 
   setupNavbarListeners();
+
+  // Handle back button
   document.getElementById("back-button")?.addEventListener("click", handleBackClick);
 
   // Handle sign in and register
