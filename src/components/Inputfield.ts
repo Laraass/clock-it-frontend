@@ -17,14 +17,16 @@ export function InputField({
            class="w-full p-2 rounded-md bg-off-white placeholder-shade-200 text-shade-800
                   text-base min-h-16 max-h-64 resize-y
                   shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]
-                  focus:outline-none focus:border-2 focus:border-shade-200"
+                  border-2 border-transparent
+                  focus:outline-none focus:border-shade-200"
          ></textarea>`
     : `<input
            type="text"
            placeholder="${placeholder}"
            class="w-full p-2 rounded-md bg-off-white placeholder-shade-200 text-shade-800
                   shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]
-                  focus:outline-none focus:border-2 focus:border-shade-200"
+                  border-2 border-transparent
+                  focus:outline-none focus:border-shade-200"
          />`;
 
   return `
