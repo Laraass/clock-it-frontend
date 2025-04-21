@@ -1,7 +1,7 @@
 export function Button(text: string): string {
   return `
       <button
-        class="text-shade-800 px-4 py-2 rounded-md font-semibold bg-primary-crude 
+        class="text-shade-800 px-4 py-2 rounded-md font-medium bg-primary-crude 
                shadow-[inset_0_0_10px_5px_#7AB5E0] 
                cursor-pointer
                hover:bg-secondary 
