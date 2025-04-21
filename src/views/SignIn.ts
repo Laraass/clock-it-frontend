@@ -3,8 +3,8 @@ import { Button } from "../components/Button";
 
 export function SignIn(): string {
   return `
-    <section class="w-full max-w-md mx-auto mt-16 flex flex-col gap-8">
-      <h1 class="text-xl font-bold text-center text-shade-800">Sign In</h1>
+    <section class="w-full max-w-md mx-auto flex flex-col gap-10">
+      <img src="./clockit_logo.svg" class="mx-auto w-80">
       
       <form class="flex flex-col gap-6">
         ${InputField({
@@ -17,9 +17,18 @@ export function SignIn(): string {
           placeholder: "Enter your password",
         })}
 
-        <div class="mt-4">
+        <div class="flex flex-col gap-3">
+        <div class="mx-auto">
           ${Button("Sign in")}
         </div>
+
+        <p class="text-center text-sm">
+            Don't have an account? 
+              <a href="/" class="underline cursor-pointer text-shade-800 inline-block hover:scale-102 active:scale-102 transition-transform duration-300">
+                Register
+              </a>
+        </p>
+
       </form>
     </section>
   `;
