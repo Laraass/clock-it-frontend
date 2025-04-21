@@ -5,27 +5,32 @@ import { handleBackClick } from "./utils/backLogic";
 import { SignIn } from "./views/SignIn";
 import { Register } from "./views/Register";
 
+const app = document.querySelector<HTMLDivElement>("#app")!;
+
 function renderView() {
-  const app = document.querySelector<HTMLDivElement>("#app")!;
-  const route = window.location.hash;
+  const hash = window.location.hash;
+  let viewHtml: string;
 
-  let view = "";
-
-  switch (route) {
+  switch (hash) {
     case "#/register":
-      view = Register();
+      viewHtml = Register();
       break;
     case "#/signin":
     default:
-      view = SignIn();
+      viewHtml = SignIn();
       break;
   }
 
-  app.innerHTML = Layout(view);
+  app.innerHTML = Layout(viewHtml);
 
   setupNavbarListeners();
-  const backBtn = document.getElementById("back-button");
-  backBtn?.addEventListener("click", handleBackClick);
+  document.getElementById("back-button")?.addEventListener("click", handleBackClick);
+
+  if (hash === "" || hash === "#/signin") {
+    document.getElementById("sign-in-button")?.addEventListener("click", () => {
+      window.location.hash = "#/";
+    });
+  }
 }
 
 renderView();
