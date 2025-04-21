@@ -9,9 +9,9 @@ export function TimeReports(): string {
         
         <div class="flex flex-wrap gap-4 justify-start">
         ${Task({ task: "Create time report", id: "time-reports-create" })}
-        ${Task({ task: "See my time reports", id: "time-reports" })}
-        ${Task({ task: "Update time report", id: "time-reports" })}
-        ${Task({ task: "Delete time report", id: "time-reports" })}
+        ${Task({ task: "See my time reports", id: "time-reports-all" })}
+        ${Task({ task: "Update time report", id: "time-reports-update" })}
+        ${Task({ task: "Delete time report", id: "time-reports-delete" })}
         </div>
       </section>
     `;
