@@ -4,7 +4,8 @@ import { setupNavbarListeners } from "./components/Navbar";
 import { handleBackClick } from "./utils/backLogic";
 import { SignIn } from "./views/SignIn";
 import { Register } from "./views/Register";
-// import { Home } from "./views/Home";
+import { Home } from "./views/Home";
+import { TimeReports } from "./views/TimeReports";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -16,13 +17,16 @@ function renderView() {
     case "#/register":
       viewHtml = Register();
       break;
+    case "#/":
+      viewHtml = Home();
+      break;
     case "#/signin":
     default:
       viewHtml = SignIn();
       break;
-    // case '#/':
-    //     viewHtml = Home();
-    //     break;
+    case "#/timereports":
+      viewHtml = TimeReports();
+      break;
   }
 
   app.innerHTML = Layout(viewHtml);
@@ -30,6 +34,7 @@ function renderView() {
   setupNavbarListeners();
   document.getElementById("back-button")?.addEventListener("click", handleBackClick);
 
+  // Handle sign in and register
   if (hash === "" || hash === "#/signin") {
     document.getElementById("sign-in-button")?.addEventListener("click", () => {
       window.location.hash = "#/";
@@ -39,6 +44,13 @@ function renderView() {
   if (hash === "" || hash === "#/register") {
     document.getElementById("register-button")?.addEventListener("click", () => {
       window.location.hash = "#/";
+    });
+  }
+
+  // Handle task routing from Home
+  if (hash === "#/") {
+    document.getElementById("time-reports")?.addEventListener("click", () => {
+      window.location.hash = "#/timereports";
     });
   }
 }
