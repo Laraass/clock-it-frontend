@@ -4,7 +4,7 @@ import { setupNavbarListeners } from "./components/Navbar";
 import { handleBackClick } from "./utils/backLogic";
 import { SignIn } from "./views/SignIn";
 import { Register } from "./views/Register";
-// import { Home } from "./views/Home";
+import { Home } from "./views/Home";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -20,9 +20,9 @@ function renderView() {
     default:
       viewHtml = SignIn();
       break;
-    // case '#/':
-    //     viewHtml = Home();
-    //     break;
+    case '#/':
+        viewHtml = Home();
+        break;
   }
 
   app.innerHTML = Layout(viewHtml);
