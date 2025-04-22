@@ -10,21 +10,25 @@ export function Register(): string {
         ${InputField({
           title: "Name",
           placeholder: "Enter your name",
+          name: "name",
         })}
 
         ${InputField({
           title: "E-mail",
           placeholder: "Enter your e-mail",
+          name: "email",
         })}
 
         ${InputField({
           title: "Password",
           placeholder: "Enter your password",
+          name: "password",
+          type: "default",
         })}
 
         <div class="flex flex-col gap-3">
           <div class="mx-auto">
-          ${Button({ text: "Register", id: "register-button" })}
+            ${Button({ text: "Register", id: "register-button" })}
           </div>
 
           <p class="text-center text-sm">

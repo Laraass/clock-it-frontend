@@ -10,16 +10,18 @@ export function SignIn(): string {
         ${InputField({
           title: "E-mail",
           placeholder: "Enter your e-mail",
+          name: "email",
         })}
 
         ${InputField({
           title: "Password",
           placeholder: "Enter your password",
+          name: "password",
         })}
 
         <div class="flex flex-col gap-3">
           <div class="mx-auto">
-          ${Button({ text: "Sign in", id: "sign-in-button" })}
+            ${Button({ text: "Sign in", id: "sign-in-button" })}
           </div>
 
           <p class="text-center text-sm">
@@ -38,4 +40,3 @@ export function SignIn(): string {
     </section>
   `;
 }
-
