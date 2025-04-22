@@ -6,6 +6,7 @@ import { SignIn } from "./views/SignIn";
 import { Register } from "./views/Register";
 import { Home } from "./views/Home";
 import { TimeReports } from "./views/TimeReports";
+import { CreateTimeReport } from "./views/CreateTimeReport";
 import { AllTimeReports } from "./views/AllTimeReports";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
@@ -24,6 +25,9 @@ function renderView() {
     case "#/signin":
     default:
       viewHtml = SignIn();
+      break;
+    case "#/timereports/create":
+      viewHtml = CreateTimeReport();
       break;
     case "#/timereports":
       viewHtml = TimeReports();
@@ -51,7 +55,8 @@ function renderView() {
 
   if (hash === "" || hash === "#/register") {
     document
-      .getElementById("register-button")?.addEventListener("click", () => {
+      .getElementById("register-button")
+      ?.addEventListener("click", () => {
         window.location.hash = "#/";
       });
   }
@@ -63,15 +68,43 @@ function renderView() {
     });
   }
 
-   // Handle tasks routing from Time reports page
-   if (hash === "#/timereports") {
+  // Handle tasks routing from Time reports page
+  if (hash === "#/timereports") {
     const navigateToView = () => {
       window.location.hash = "#/timereports/all";
     };
+    document
+      .getElementById("time-reports-create")
+      ?.addEventListener("click", () => {
+        window.location.hash = "#/timereports/create";
+      });
 
-    document.getElementById("time-reports-all")?.addEventListener("click", navigateToView);
-    document.getElementById("time-reports-update")?.addEventListener("click", navigateToView);
-    document.getElementById("time-reports-delete")?.addEventListener("click", navigateToView);
+    document
+      .getElementById("time-reports-all")
+      ?.addEventListener("click", navigateToView);
+    document
+      .getElementById("time-reports-update")
+      ?.addEventListener("click", navigateToView);
+    document
+      .getElementById("time-reports-delete")
+      ?.addEventListener("click", navigateToView);
+  }
+
+  if (hash === "#/timereports/create") {
+    const navigateToView = () => {
+      window.location.hash = "#/timereports/create";
+    };
+
+    document
+      .getElementById("time-reports-create")
+      ?.addEventListener("click", navigateToView);
+  }
+
+  //Handle cancel button
+  if (hash === "#/timereports/create") {
+    document.getElementById("cancel")?.addEventListener("click", () => {
+      window.location.hash = "#/timereports";
+    });
   }
 }
 
