@@ -5,8 +5,8 @@ export function Register(): string {
   return `
     <section class="w-full max-w-md mx-auto flex flex-col gap-4">
       <h1 class="text-2xl font-bold text-shade-800">Register account</h1>
-      
-      <form class="flex flex-col gap-6">
+
+      <form id="register-form" class="flex flex-col gap-6">
         ${InputField({
           title: "Name",
           placeholder: "Enter your name",

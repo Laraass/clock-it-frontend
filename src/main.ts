@@ -8,6 +8,7 @@ import { Home } from "./views/Home";
 import { TimeReports } from "./views/TimeReports";
 import { CreateTimeReport } from "./views/CreateTimeReport";
 import { AllTimeReports } from "./views/AllTimeReports";
+import { registerUser } from "./utils/auth";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -46,19 +47,35 @@ function renderView() {
     .getElementById("back-button")
     ?.addEventListener("click", handleBackClick);
 
-  // Handle sign in and register
+  // Handle sign in
   if (hash === "" || hash === "#/signin") {
     document.getElementById("sign-in-button")?.addEventListener("click", () => {
       window.location.hash = "#/";
     });
   }
 
-  if (hash === "" || hash === "#/register") {
-    document
-      .getElementById("register-button")
-      ?.addEventListener("click", () => {
-        window.location.hash = "#/";
-      });
+  // Register management
+  if (hash === "#/register") {
+    const form = document.getElementById("register-form") as HTMLFormElement;
+  
+    form?.addEventListener("submit", async (event) => {
+      event.preventDefault();
+  
+      const name = (document.querySelector("input[name='name']") as HTMLInputElement).value;
+      const email = (document.querySelector("input[name='email']") as HTMLInputElement).value;
+      const password = (document.querySelector("input[name='password']") as HTMLInputElement).value;
+  
+      try {
+        const response = await registerUser(name, email, password);
+  
+        if (response.message === "User registered!") {
+          window.location.hash = "#/signin";
+        }
+      } catch (error: any) {
+        console.error(error);
+        alert(error.message); 
+      }
+    });
   }
 
   // Handle menu routing from Home page
