@@ -17,6 +17,7 @@ export function SignIn(): string {
           title: "Password",
           placeholder: "Enter your password",
           name: "password",
+          inputType: "password",
         })}
 
         <div class="flex flex-col gap-3">

@@ -24,6 +24,7 @@ export function Register(): string {
           placeholder: "Enter your password",
           name: "password",
           type: "default",
+          inputType: "password",
         })}
 
         <div class="flex flex-col gap-3">
