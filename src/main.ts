@@ -8,13 +8,20 @@ import { Home } from "./views/Home";
 import { TimeReports } from "./views/TimeReports";
 import { CreateTimeReport } from "./views/CreateTimeReport";
 import { AllTimeReports } from "./views/AllTimeReports";
-import { registerUser } from "./utils/auth";
+import { registerUser, loginUser, isAuthenticated, logoutUser } from "./utils/auth";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
 function renderView() {
   const hash = window.location.hash;
   let viewHtml: string;
+
+  // Redirect if user is not authenticated
+  const protectedRoutes = ["#/timereports", "#/timereports/create", "#/timereports/all"];
+  if (protectedRoutes.includes(hash) && !isAuthenticated()) {
+    window.location.hash = "#/signin";
+    return;
+  }
 
   switch (hash) {
     case "#/register":
@@ -39,7 +46,6 @@ function renderView() {
   }
 
   app.innerHTML = Layout(viewHtml);
-
   setupNavbarListeners();
 
   // Back button management
@@ -47,10 +53,28 @@ function renderView() {
     .getElementById("back-button")
     ?.addEventListener("click", handleBackClick);
 
+  // Sign out management
+  document.getElementById("logout")?.addEventListener("click", () => {
+    logoutUser();
+    window.location.hash = "#/signin";
+  });
+
   // Sign in management
   if (hash === "" || hash === "#/signin") {
-    document.getElementById("sign-in-button")?.addEventListener("click", () => {
-      window.location.hash = "#/";
+    document.getElementById("sign-in-button")?.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      const email = (document.querySelector("input[name='email']") as HTMLInputElement).value;
+      const password = (document.querySelector("input[name='password']") as HTMLInputElement).value;
+
+      try {
+        const user = await loginUser(email, password);
+        console.log("Logged in:", user);
+
+        window.location.hash = "#/";
+      } catch (error: any) {
+        alert(error.message || "Failed to sign in.");
+      }
     });
   }
 
@@ -73,7 +97,6 @@ function renderView() {
 
       try {
         const response = await registerUser(name, email, password);
-
         if (response.message === "User registered!") {
           window.location.hash = "#/signin";
         }
@@ -84,7 +107,7 @@ function renderView() {
     });
   }
 
-  // Password visibility management
+  // Togge password visibility
   document.querySelectorAll("[id^='toggle-']").forEach((toggle) => {
     toggle.addEventListener("click", () => {
       const id = toggle.id.replace("toggle-", "");
@@ -100,35 +123,27 @@ function renderView() {
     });
   });
 
-  // Handle Home page menu navigation
+  // Menu navigation
   if (hash === "#/") {
     document.getElementById("time-reports")?.addEventListener("click", () => {
       window.location.hash = "#/timereports";
     });
   }
 
-  // Handle Time Reports routing
   if (hash === "#/timereports") {
     const navigateToView = () => {
       window.location.hash = "#/timereports/all";
     };
-    document
-      .getElementById("time-reports-create")
-      ?.addEventListener("click", () => {
-        window.location.hash = "#/timereports/create";
-      });
-    document
-      .getElementById("time-reports-all")
-      ?.addEventListener("click", navigateToView);
-    document
-      .getElementById("time-reports-update")
-      ?.addEventListener("click", navigateToView);
-    document
-      .getElementById("time-reports-delete")
-      ?.addEventListener("click", navigateToView);
+
+    document.getElementById("time-reports-create")?.addEventListener("click", () => {
+      window.location.hash = "#/timereports/create";
+    });
+
+    document.getElementById("time-reports-all")?.addEventListener("click", navigateToView);
+    document.getElementById("time-reports-update")?.addEventListener("click", navigateToView);
+    document.getElementById("time-reports-delete")?.addEventListener("click", navigateToView);
   }
 
-  // Handle Create Time Report cancel button
   if (hash === "#/timereports/create") {
     document.getElementById("cancel")?.addEventListener("click", () => {
       window.location.hash = "#/timereports";
