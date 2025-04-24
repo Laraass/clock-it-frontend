@@ -7,7 +7,7 @@ import { CreateTimeReport } from "../views/CreateTimeReport";
 import { EditTimeReport } from "../views/EditTimeReport";
 // import { SpecificTimeReport } from "../views/SpecificTimeReport";
 
-export function getViewByRoute(route: string): string {
+export async function getViewByRoute(route: string): Promise<string> {
   switch (route) {
     case "/":
       return Home();

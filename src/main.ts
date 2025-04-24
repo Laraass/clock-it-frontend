@@ -14,11 +14,11 @@ import {
   isAuthenticated,
   logoutUser,
 } from "./utils/auth";
-import { createTimeReport } from "./utils/reports";
+import { createTimeReport, getAllTimeReports } from "./utils/reports";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
-function renderView() {
+async function renderView() {
   const hash = window.location.hash;
   let viewHtml: string;
 
@@ -51,7 +51,7 @@ function renderView() {
       viewHtml = TimeReports();
       break;
     case "#/timereports/all":
-      viewHtml = AllTimeReports();
+      viewHtml = await AllTimeReports();
       break;
   }
 
@@ -215,7 +215,30 @@ function renderView() {
   cancelButton?.addEventListener("click", () => {
     window.location.hash = "#/timereports"; // Navigate to Time reports
   });
+
+  // All time reports management
+  if (hash === "#/timereports/all") {
+    try {
+      const reports = await getAllTimeReports(); // Fetch reports
+      const reportsContainer = document.getElementById("reports-container");
+
+      reports.forEach((report: any) => {
+        const reportElement = document.createElement("div");
+        reportElement.className = "report-card";
+        reportElement.innerHTML = `
+          <h3>${report.project}</h3>
+          <p>${new Date(report.date).toLocaleDateString()}</p>
+          <p>Hours Worked: ${report.hoursWorked}</p>
+          <p>${report.description}</p>
+        `;
+        reportsContainer?.appendChild(reportElement);
+      });
+    } catch (error) {
+      console.error("Error displaying time reports:", error);
+    }
+  }
 }
 
+// Initial rendering
 renderView();
 window.addEventListener("hashchange", renderView);

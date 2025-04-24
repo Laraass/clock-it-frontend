@@ -16,6 +16,7 @@ export function TimeReport({
   description,
   projectId,
 }: TimeReportProps): string {
+  const formattedDate = new Date(date).toLocaleDateString('sv-SE');
   return `
       <a href="/projekt/${projectId}" 
          class="bg-off-white text-shade-800 w-full rounded-md 
@@ -32,7 +33,7 @@ export function TimeReport({
           </div>
         </div>
   
-        <p class="text-[12px] text-shade-200">${date} , ${hoursWorked}</p>
+        <p class="text-[12px] text-shade-200">${formattedDate}, ${hoursWorked}h</p>
         <p class="text-[12px] text-shade-200 line-clamp-3">${description}</p>
       </a>
     `;
