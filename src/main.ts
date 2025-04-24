@@ -217,7 +217,27 @@ async function renderView() {
   });
 
   // All time reports management
+  if (hash === "#/timereports/all") {
+    try {
+      const reports = await getAllTimeReports(); // Fetch reports
+      const reportsContainer = document.getElementById("reports-container");
 
+      reports.forEach((report: any) => {
+        const reportElement = document.createElement("div");
+        reportElement.className = "report-card";
+        reportElement.innerHTML = `
+          <h3>${report.project}</h3>
+          <p>${new Date(report.date).toLocaleDateString()}</p>
+          <p>Hours Worked: ${report.hoursWorked}</p>
+          <p>${report.description}</p>
+        `;
+        reportsContainer?.appendChild(reportElement);
+      });
+    } catch (error) {
+      console.error("Error displaying time reports:", error);
+    }
+  }
+}
 
 // Initial rendering
 renderView();

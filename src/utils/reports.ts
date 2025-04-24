@@ -58,3 +58,33 @@ export async function createTimeReport(
     throw new Error(data.message || "Failed to create time report.");
   }
 }
+
+// Fetch all time reports
+export async function getAllTimeReports() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User not authenticated.");
+  }
+
+  try {
+    const response = await fetch("https://clock-it-pd7b.onrender.com/api/reports", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return data; // Return all reports
+    } else {
+      throw new Error(data.message || "Failed to fetch time reports.");
+    }
+  } catch (error: any) {
+    console.error("Error fetching time reports:", error.message);
+    throw error; // Rethrow error to be handled by the calling code
+  }
+}
