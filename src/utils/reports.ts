@@ -88,3 +88,5 @@ export async function getAllTimeReports() {
     throw error; // Rethrow error to be handled by the calling code
   }
 }
+
+// Fetch specific time report
