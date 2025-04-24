@@ -5,7 +5,7 @@ import { Back } from "../components/Back";
 export function CreateTimeReport(): string {
   return `
     <section class="w-full flex flex-col gap-4">
-      ${Back({ page: "Time Reports", id: "back-button" })}
+      ${Back({ page: "Time reports", id: "back-button" })}
 
       <h1 class="text-2xl font-bold text-shade-800">Create time report</h1>
 
@@ -19,13 +19,15 @@ export function CreateTimeReport(): string {
         ${InputField({
           title: "Date",
           placeholder: "YYYY‑MM‑DD",
-          name: "date"
+          name: "date",
+          inputType: "date"
         })}
 
         ${InputField({
           title: "Hours worked",
-          placeholder: "e.g. 4h",
-          name: "hoursWorked"
+          placeholder: "e.g. 4",
+          name: "hoursWorked",
+          inputType: "number"
         })}
 
         ${InputField({
