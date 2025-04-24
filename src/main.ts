@@ -14,11 +14,11 @@ import {
   isAuthenticated,
   logoutUser,
 } from "./utils/auth";
-import { createTimeReport } from "./utils/reports";
+import { createTimeReport, getAllTimeReports } from "./utils/reports";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
-function renderView() {
+async function renderView() {
   const hash = window.location.hash;
   let viewHtml: string;
 
@@ -51,7 +51,7 @@ function renderView() {
       viewHtml = TimeReports();
       break;
     case "#/timereports/all":
-      viewHtml = AllTimeReports();
+      viewHtml = await AllTimeReports();
       break;
   }
 
@@ -215,7 +215,10 @@ function renderView() {
   cancelButton?.addEventListener("click", () => {
     window.location.hash = "#/timereports"; // Navigate to Time reports
   });
-}
 
+  // All time reports management
+
+
+// Initial rendering
 renderView();
 window.addEventListener("hashchange", renderView);
