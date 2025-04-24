@@ -167,7 +167,55 @@ function renderView() {
   }
 
   // Create time report
- 
+  const form = document.getElementById("create-report-form");
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const projectInput = document.querySelector(
+      '[name="project"]'
+    ) as HTMLInputElement;
+    const dateInput = document.querySelector(
+      '[name="date"]'
+    ) as HTMLInputElement;
+    const hoursWorkedInput = document.querySelector(
+      '[name="hoursWorked"]'
+    ) as HTMLInputElement;
+    const descriptionInput = document.querySelector(
+      '[name="description"]'
+    ) as HTMLTextAreaElement;
+
+    const projectValue = projectInput?.value;
+    const dateValue = dateInput?.value;
+    const hoursWorkedValue = hoursWorkedInput?.value;
+    const descriptionValue = descriptionInput?.value;
+
+    if (!projectValue || !dateValue || !hoursWorkedValue || !descriptionValue) {
+      console.log("Please fill out all fields.");
+      return;
+    }
+
+    try {
+      await createTimeReport(
+        projectValue,
+        dateValue,
+        hoursWorkedValue,
+        descriptionValue
+      );
+      console.log("Time report created");
+      window.location.hash = "#/timereports";
+    } catch (error: any) {
+      console.error("Error creating time report:", error.message);
+    }
+  });
+
+  // Cancel button functionality
+  const cancelButton = document.getElementById("cancel");
+
+  cancelButton?.addEventListener("click", () => {
+    window.location.hash = "#/timereports"; // Navigate to Time reports
+  });
+}
 
 renderView();
 window.addEventListener("hashchange", renderView);
