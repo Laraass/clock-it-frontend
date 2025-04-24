@@ -3,7 +3,7 @@ type InputFieldProps = {
   placeholder: string;
   name?: string;
   type?: "default" | "description";
-  inputType?: "text" | "password";
+  inputType?: "text" | "password" | "number" | "date";
 };
 
 export function InputField({
@@ -45,6 +45,27 @@ export function InputField({
               <span class="iconify text-shade-800" data-icon="clarity:eye-hide-solid"></span>
             </span>
           </div>`
+    : inputType === "number"
+    ? `<input
+         name="${name}"
+         type="number"
+         placeholder="${placeholder}"
+         step="0.1"
+         class="w-full p-2 rounded-md bg-off-white placeholder-shade-200 text-shade-800
+                shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]
+                border-2 border-transparent
+                focus:outline-none focus:border-shade-200"
+       />`
+    : inputType === "date"
+    ? `<input
+         name="${name}"
+         type="date"
+         placeholder="${placeholder}"
+         class="w-full p-2 rounded-md bg-off-white placeholder-shade-200 text-shade-800
+                shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]
+                border-2 border-transparent
+                focus:outline-none focus:border-shade-200"
+       />`
     : `<input
          name="${name}"
          type="text"

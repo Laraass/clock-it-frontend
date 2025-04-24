@@ -8,7 +8,13 @@ import { Home } from "./views/Home";
 import { TimeReports } from "./views/TimeReports";
 import { CreateTimeReport } from "./views/CreateTimeReport";
 import { AllTimeReports } from "./views/AllTimeReports";
-import { registerUser, loginUser, isAuthenticated, logoutUser } from "./utils/auth";
+import {
+  registerUser,
+  loginUser,
+  isAuthenticated,
+  logoutUser,
+} from "./utils/auth";
+import { createTimeReport } from "./utils/reports";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -17,7 +23,11 @@ function renderView() {
   let viewHtml: string;
 
   // Redirect if user is not authenticated
-  const protectedRoutes = ["#/timereports", "#/timereports/create", "#/timereports/all"];
+  const protectedRoutes = [
+    "#/timereports",
+    "#/timereports/create",
+    "#/timereports/all",
+  ];
   if (protectedRoutes.includes(hash) && !isAuthenticated()) {
     window.location.hash = "#/signin";
     return;
@@ -61,21 +71,25 @@ function renderView() {
 
   // Sign in management
   if (hash === "" || hash === "#/signin") {
-    document.getElementById("sign-in-button")?.addEventListener("click", async (e) => {
-      e.preventDefault();
+    document
+      .getElementById("sign-in-button")
+      ?.addEventListener("click", async (e) => {
+        e.preventDefault();
 
-      const email = (document.querySelector("input[name='email']") as HTMLInputElement).value;
-      const password = (document.querySelector("input[name='password']") as HTMLInputElement).value;
+        const email = (
+          document.querySelector("input[name='email']") as HTMLInputElement
+        ).value;
+        const password = (
+          document.querySelector("input[name='password']") as HTMLInputElement
+        ).value;
 
-      try {
-        const user = await loginUser(email, password);
-        console.log("Logged in:", user);
-
-        window.location.hash = "#/";
-      } catch (error: any) {
-        alert(error.message || "Failed to sign in.");
-      }
-    });
+        try {
+          await loginUser(email, password);
+          window.location.hash = "#/";
+        } catch (error: any) {
+          alert(error.message || "Failed to sign in.");
+        }
+      });
   }
 
   // Register management
@@ -101,13 +115,12 @@ function renderView() {
           window.location.hash = "#/signin";
         }
       } catch (error: any) {
-        console.error(error);
         alert(error.message);
       }
     });
   }
 
-  // Togge password visibility
+  // Toggle password visibility
   document.querySelectorAll("[id^='toggle-']").forEach((toggle) => {
     toggle.addEventListener("click", () => {
       const id = toggle.id.replace("toggle-", "");
@@ -123,32 +136,85 @@ function renderView() {
     });
   });
 
-  // Menu navigation
+  // Home page buttons
   if (hash === "#/") {
     document.getElementById("time-reports")?.addEventListener("click", () => {
       window.location.hash = "#/timereports";
     });
   }
 
+  // Time reports buttons
   if (hash === "#/timereports") {
     const navigateToView = () => {
       window.location.hash = "#/timereports/all";
     };
 
-    document.getElementById("time-reports-create")?.addEventListener("click", () => {
-      window.location.hash = "#/timereports/create";
-    });
+    document
+      .getElementById("time-reports-create")
+      ?.addEventListener("click", () => {
+        window.location.hash = "#/timereports/create";
+      });
 
-    document.getElementById("time-reports-all")?.addEventListener("click", navigateToView);
-    document.getElementById("time-reports-update")?.addEventListener("click", navigateToView);
-    document.getElementById("time-reports-delete")?.addEventListener("click", navigateToView);
+    document
+      .getElementById("time-reports-all")
+      ?.addEventListener("click", navigateToView);
+    document
+      .getElementById("time-reports-update")
+      ?.addEventListener("click", navigateToView);
+    document
+      .getElementById("time-reports-delete")
+      ?.addEventListener("click", navigateToView);
   }
 
-  if (hash === "#/timereports/create") {
-    document.getElementById("cancel")?.addEventListener("click", () => {
+  // Create time report
+  const form = document.getElementById("create-report-form");
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const projectInput = document.querySelector(
+      '[name="project"]'
+    ) as HTMLInputElement;
+    const dateInput = document.querySelector(
+      '[name="date"]'
+    ) as HTMLInputElement;
+    const hoursWorkedInput = document.querySelector(
+      '[name="hoursWorked"]'
+    ) as HTMLInputElement;
+    const descriptionInput = document.querySelector(
+      '[name="description"]'
+    ) as HTMLTextAreaElement;
+
+    const projectValue = projectInput?.value;
+    const dateValue = dateInput?.value;
+    const hoursWorkedValue = hoursWorkedInput?.value;
+    const descriptionValue = descriptionInput?.value;
+
+    if (!projectValue || !dateValue || !hoursWorkedValue || !descriptionValue) {
+      console.log("Please fill out all fields.");
+      return;
+    }
+
+    try {
+      await createTimeReport(
+        projectValue,
+        dateValue,
+        hoursWorkedValue,
+        descriptionValue
+      );
+      console.log("Time report created");
       window.location.hash = "#/timereports";
-    });
-  }
+    } catch (error: any) {
+      console.error("Error creating time report:", error.message);
+    }
+  });
+
+  // Cancel button functionality
+  const cancelButton = document.getElementById("cancel");
+
+  cancelButton?.addEventListener("click", () => {
+    window.location.hash = "#/timereports"; // Navigate to Time reports
+  });
 }
 
 renderView();
