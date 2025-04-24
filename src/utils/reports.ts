@@ -37,7 +37,7 @@ export async function createTimeReport(
   };
   console.log("Request Body:", requestBody); // Log data being sent
 
-  // Skicka POST-förfrågan till servern
+  // Send POST request to server
   const response = await fetch(
     "https://clock-it-pd7b.onrender.com/api/reports",
     {
