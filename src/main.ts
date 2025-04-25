@@ -15,6 +15,7 @@ import {
   logoutUser,
 } from "./utils/auth";
 import { createTimeReport, getAllTimeReports } from "./utils/reports";
+import { SpecificTimeReport } from "./views/SpecificTimeReport";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -28,11 +29,18 @@ async function renderView() {
     "#/timereports/create",
     "#/timereports/all",
   ];
+
   if (protectedRoutes.includes(hash) && !isAuthenticated()) {
     window.location.hash = "#/signin";
     return;
   }
 
+// Hantera generella tidrapporter och specifika tidrapporter
+if (/^#\/timereports\/\d+$/.test(hash)) {  // Regex för specifika tidrapporter
+  const id = hash.split("/")[2];  // Extrahera ID från hash (t.ex. "#/timereports/123")
+  viewHtml = await SpecificTimeReport(id);  // Skicka ID till vyn
+} else {
+  // Hantera övriga vyer
   switch (hash) {
     case "#/register":
       viewHtml = Register();
@@ -54,6 +62,8 @@ async function renderView() {
       viewHtml = await AllTimeReports();
       break;
   }
+}
+
 
   app.innerHTML = Layout(viewHtml);
   setupNavbarListeners();

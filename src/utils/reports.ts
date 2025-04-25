@@ -1,3 +1,12 @@
+// Define the TimeReportData type for type checking
+export type TimeReportData = {
+  _id: string;
+  project: string;
+  date: string;
+  hoursWorked: string;
+  description: string;
+};
+
 // Create time report
 export async function createTimeReport(
   project: string,
@@ -7,6 +16,7 @@ export async function createTimeReport(
 ) {
   const token = localStorage.getItem("token");
 
+  // Check if the user is authenticated
   if (!token) {
     throw new Error("User not authenticated.");
   }
@@ -28,7 +38,7 @@ export async function createTimeReport(
     throw new Error("Invalid date format.");
   }
 
-  // Log data before sending
+  // Log data before sending (for debugging purposes)
   const requestBody = {
     project,
     date: parsedDate,
@@ -37,25 +47,30 @@ export async function createTimeReport(
   };
   console.log("Request Body:", requestBody); // Log data being sent
 
-  // Send POST request to server
-  const response = await fetch(
-    "https://clock-it-pd7b.onrender.com/api/reports",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(requestBody),
+  try {
+    // Send POST request to server
+    const response = await fetch(
+      "https://clock-it-pd7b.onrender.com/api/reports",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return data; // Return the created report
+    } else {
+      throw new Error(data.message || "Failed to create time report.");
     }
-  );
-
-  const data = await response.json();
-
-  if (response.ok) {
-    return data;
-  } else {
-    throw new Error(data.message || "Failed to create time report.");
+  } catch (error) {
+    console.error("Error creating time report:", error);
+    throw error; // Rethrow error to be handled by the calling code
   }
 }
 
@@ -63,18 +78,22 @@ export async function createTimeReport(
 export async function getAllTimeReports() {
   const token = localStorage.getItem("token");
 
+  // Check if the user is authenticated
   if (!token) {
     throw new Error("User not authenticated.");
   }
 
   try {
-    const response = await fetch("https://clock-it-pd7b.onrender.com/api/reports", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      "https://clock-it-pd7b.onrender.com/api/reports",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     const data = await response.json();
 
@@ -90,3 +109,30 @@ export async function getAllTimeReports() {
 }
 
 // Fetch specific time report
+export async function getReportById(projectId: string): Promise<TimeReportData | null> {
+  try {
+    const response = await fetch(`/api/reports/${projectId}`);
+    if (!response.ok) {
+      throw new Error('Time report not found');
+    }
+    const data: TimeReportData = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching time report:", error);
+    return null;
+  }
+}
+
+// utils/timeReports.ts
+export async function TimeReportDetail(projectId: string) {
+  console.log("Rendering time report with ID:", projectId);
+
+  // Här kan du hämta specifika tidrapportsdata från API eller databas
+  // För nu använder vi ett exempel
+  return `
+    <div>
+      <h1>Time Report: ${projectId}</h1>
+      <p>Details for project ${projectId} will be displayed here.</p>
+    </div>
+  `;
+}
