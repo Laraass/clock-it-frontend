@@ -37,7 +37,7 @@ export async function createTimeReport(
   };
   console.log("Request Body:", requestBody); // Log data being sent
 
-  // Skicka POST-förfrågan till servern
+  // Send POST request to server
   const response = await fetch(
     "https://clock-it-pd7b.onrender.com/api/reports",
     {
@@ -86,5 +86,35 @@ export async function getAllTimeReports() {
   } catch (error: any) {
     console.error("Error fetching time reports:", error.message);
     throw error; // Rethrow error to be handled by the calling code
+  }
+}
+
+// Delete time report
+export async function deleteTimeReport(reportId: string) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User not authenticated.");
+  }
+
+  try {
+    const response = await fetch(`https://clock-it-pd7b.onrender.com/api/reports/${reportId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return data;
+    } else {
+      throw new Error(data.message || "Failed to delete time report.");
+    }
+  } catch (error: any) {
+    console.error("Error deleting time report:", error.message);
+    throw error;
   }
 }

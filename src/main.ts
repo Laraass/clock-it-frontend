@@ -14,7 +14,11 @@ import {
   isAuthenticated,
   logoutUser,
 } from "./utils/auth";
-import { createTimeReport, getAllTimeReports } from "./utils/reports";
+import {
+  createTimeReport,
+  deleteTimeReport,
+  getAllTimeReports,
+} from "./utils/reports";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -226,12 +230,31 @@ async function renderView() {
         const reportElement = document.createElement("div");
         reportElement.className = "report-card";
         reportElement.innerHTML = `
-          <h3>${report.project}</h3>
-          <p>${new Date(report.date).toLocaleDateString()}</p>
-          <p>Hours Worked: ${report.hoursWorked}</p>
-          <p>${report.description}</p>
-        `;
+        <h3>${report.project}</h3>
+        <p>${new Date(report.date).toLocaleDateString()}</p>
+        <p>Hours Worked: ${report.hoursWorked}</p>
+        <p>${report.description}</p>
+        <button class="delete-btn" data-id="${report._id}">Delete</button>
+      `;
         reportsContainer?.appendChild(reportElement);
+      });
+
+      document.querySelectorAll(".delete-btn").forEach((btn) => {
+        btn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          const button = e.currentTarget as HTMLButtonElement;
+          const reportId = button.dataset.id;
+
+          if (confirm("Are you sure you want to delete this time report?")) {
+            try {
+              await deleteTimeReport(reportId!);
+              alert("Time report deleted successfully!");
+              window.location.reload(); // Refresh view to show updated list
+            } catch (error: any) {
+              alert(error.message || "Failed to delete time report.");
+            }
+          }
+        });
       });
     } catch (error) {
       console.error("Error displaying time reports:", error);
