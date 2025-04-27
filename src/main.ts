@@ -8,6 +8,7 @@ import { Home } from "./views/Home";
 import { TimeReports } from "./views/TimeReports";
 import { CreateTimeReport } from "./views/CreateTimeReport";
 import { AllTimeReports } from "./views/AllTimeReports";
+import { SpecificTimeReport } from "./views/SpecificTimeReport";
 import {
   registerUser,
   loginUser,
@@ -57,6 +58,16 @@ async function renderView() {
     case "#/timereports/all":
       viewHtml = await AllTimeReports();
       break;
+  }
+
+  if (
+    hash.startsWith("#/timereports/") &&
+    hash.split("/").length === 3 &&
+    hash.split("/")[2] !== "create" &&
+    hash.split("/")[2] !== "all"
+  ) {
+    const id = hash.split("/")[2];
+    viewHtml = await SpecificTimeReport(id);
   }
 
   app.innerHTML = Layout(viewHtml);
