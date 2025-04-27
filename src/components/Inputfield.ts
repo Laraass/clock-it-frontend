@@ -4,6 +4,7 @@ type InputFieldProps = {
   name?: string;
   type?: "default" | "description";
   inputType?: "text" | "password" | "number" | "date";
+  value?: string;
 };
 
 export function InputField({
@@ -12,6 +13,7 @@ export function InputField({
   name = title.toLowerCase().replace(/\s+/g, "_"),
   type = "default",
   inputType = "text",
+  value = "",
 }: InputFieldProps): string {
   const isDescription = type === "description";
   const inputId = name;
@@ -25,7 +27,7 @@ export function InputField({
                 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]
                 border-2 border-transparent
                 focus:outline-none focus:border-shade-200"
-       ></textarea>`
+         >${value}</textarea>`
     : inputType === "password"
     ? `<div class="relative">
             <input
@@ -33,6 +35,7 @@ export function InputField({
               name="${name}"
               type="${inputType}"
               placeholder="${placeholder}"
+              value="${value}"
               class="w-full p-2 pr-10 rounded-md bg-off-white placeholder-shade-200 text-shade-800
                      shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]
                      border-2 border-transparent
@@ -50,6 +53,7 @@ export function InputField({
          name="${name}"
          type="number"
          placeholder="${placeholder}"
+         value="${value}"
          step="0.1"
          class="w-full p-2 rounded-md bg-off-white placeholder-shade-200 text-shade-800
                 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]
@@ -61,6 +65,7 @@ export function InputField({
          name="${name}"
          type="date"
          placeholder="${placeholder}"
+         value="${value}"
          class="w-full p-2 rounded-md bg-off-white placeholder-shade-200 text-shade-800
                 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]
                 border-2 border-transparent
@@ -70,6 +75,7 @@ export function InputField({
          name="${name}"
          type="text"
          placeholder="${placeholder}"
+         value="${value}"
          class="w-full p-2 rounded-md bg-off-white placeholder-shade-200 text-shade-800
                 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]
                 border-2 border-transparent
