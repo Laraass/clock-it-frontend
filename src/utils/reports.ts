@@ -68,13 +68,16 @@ export async function getAllTimeReports() {
   }
 
   try {
-    const response = await fetch("https://clock-it-pd7b.onrender.com/api/reports", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      "https://clock-it-pd7b.onrender.com/api/reports",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     const data = await response.json();
 
@@ -98,13 +101,16 @@ export async function deleteTimeReport(reportId: string) {
   }
 
   try {
-    const response = await fetch(`https://clock-it-pd7b.onrender.com/api/reports/${reportId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `https://clock-it-pd7b.onrender.com/api/reports/${reportId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     const data = await response.json();
 
@@ -128,13 +134,16 @@ export async function getSpecificTimeReport(reportId: string) {
   }
 
   try {
-    const response = await fetch(`https://clock-it-pd7b.onrender.com/api/reports/${reportId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `https://clock-it-pd7b.onrender.com/api/reports/${reportId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     const data = await response.json();
 
@@ -146,5 +155,61 @@ export async function getSpecificTimeReport(reportId: string) {
   } catch (error: any) {
     console.error("Error fetching specific time report:", error.message);
     throw error;
+  }
+}
+
+// Edit time report
+export async function updateTimeReport(
+  reportId: string,
+  project: string,
+  date: string,
+  hoursWorked: string,
+  description: string
+) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User not authenticated.");
+  }
+
+  if (!project || !date || !hoursWorked || !description) {
+    throw new Error("Please fill out all fields.");
+  }
+
+  const hours = parseFloat(hoursWorked);
+  if (isNaN(hours) || hours <= 0) {
+    throw new Error("Invalid number of hours worked.");
+  }
+
+  const parsedDate = new Date(date);
+  if (isNaN(parsedDate.getTime())) {
+    throw new Error("Invalid date format.");
+  }
+
+  const requestBody = {
+    project,
+    date: parsedDate,
+    hoursWorked: hours,
+    description,
+  };
+
+  const response = await fetch(
+    `https://clock-it-pd7b.onrender.com/api/reports/${reportId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(requestBody),
+    }
+  );
+
+  const data = await response.json();
+
+  if (response.ok) {
+    return data;
+  } else {
+    throw new Error(data.message || "Failed to update time report.");
   }
 }

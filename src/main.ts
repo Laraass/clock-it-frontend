@@ -9,6 +9,7 @@ import { TimeReports } from "./views/TimeReports";
 import { CreateTimeReport } from "./views/CreateTimeReport";
 import { AllTimeReports } from "./views/AllTimeReports";
 import { SpecificTimeReport } from "./views/SpecificTimeReport";
+import { EditTimeReport } from "./views/EditTimeReport";
 import {
   registerUser,
   loginUser,
@@ -19,6 +20,7 @@ import {
   createTimeReport,
   deleteTimeReport,
   getAllTimeReports,
+  updateTimeReport,
 } from "./utils/reports";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
@@ -70,8 +72,45 @@ async function renderView() {
     viewHtml = await SpecificTimeReport(id);
   }
 
+  if (hash.startsWith("#/timereports/edit/")) {
+    const id = hash.split("/")[3];
+    viewHtml = await EditTimeReport(id);
+  }
+
   app.innerHTML = Layout(viewHtml);
   setupNavbarListeners();
+  setupListeners();
+
+  // Listeners after every rendering
+  function setupListeners() {
+    const editForm =
+      document.querySelector<HTMLFormElement>("#edit-report-form");
+
+    if (editForm) {
+      editForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(editForm);
+        const project = formData.get("project") as string;
+        const date = formData.get("date") as string;
+        const hoursWorked = formData.get("hoursWorked") as string;
+        const description = formData.get("description") as string;
+        const reportId = editForm.dataset.id as string;
+
+        try {
+          await updateTimeReport(
+            reportId,
+            project,
+            date,
+            hoursWorked,
+            description
+          );
+          window.location.hash = "#/timereports/all"; // Redirect after update
+        } catch (error: any) {
+          alert(error.message);
+        }
+      });
+    }
+  }
 
   // Back button management
   document

@@ -29,7 +29,7 @@ export function TimeReport({
       <div class="flex justify-between items-start">
         <h2 class="font-bold">${project}</h2>
         <div class="flex gap-2">
-          ${EditButton()}
+          ${EditButton(projectId)}
           ${DeleteButton(projectId)}
         </div>
       </div>
