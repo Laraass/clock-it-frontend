@@ -118,3 +118,13 @@ export async function deleteTimeReport(reportId: string) {
     throw error;
   }
 }
+
+// Fetch specific time report
+export async function getTimeReportById(id: string) {
+  const response = await fetch(`https://clock-it-pd7b.onrender.com/api/reports/${id}`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch specific time report");
+  }
+  const data = await response.json();
+  return data;
+}
