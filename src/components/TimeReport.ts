@@ -16,7 +16,7 @@ export function TimeReport({
   description,
   projectId,
 }: TimeReportProps): string {
-  const formattedDate = new Date(date).toLocaleDateString('sv-SE');
+  const formattedDate = new Date(date).toLocaleDateString("sv-SE");
   return `
     <div onclick="location.hash='#/timereports/${projectId}'" 
          class="cursor-pointer time-report bg-off-white text-shade-800 w-full rounded-md 

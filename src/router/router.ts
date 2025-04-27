@@ -34,4 +34,3 @@ export async function getViewByRoute(route: string): Promise<string> {
       return `<h1 class="text-xl text-shade-800 p-4">404 Page does not exist</h1>`;
   }
 }
-
