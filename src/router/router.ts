@@ -5,7 +5,7 @@ import { TimeReports } from "../views/TimeReports";
 import { AllTimeReports } from "../views/AllTimeReports";
 import { CreateTimeReport } from "../views/CreateTimeReport";
 import { EditTimeReport } from "../views/EditTimeReport";
-// import { SpecificTimeReport } from "../views/SpecificTimeReport";
+import { SpecificTimeReport } from "../views/SpecificTimeReport";
 
 export async function getViewByRoute(route: string): Promise<string> {
   switch (route) {
@@ -23,10 +23,15 @@ export async function getViewByRoute(route: string): Promise<string> {
       return CreateTimeReport();
     case "/timereports/edit":
       return EditTimeReport();
-    // case route.match(/^\/timereports\/\d+$/)?.input:
-    //   const id = route.split("/")[2];
-    //   return SpecificTimeReport(id);
     default:
+      // Check if route matches /timereports/:id
+      const match = route.match(/^\/timereports\/([^\/]+)$/);
+      if (match) {
+        const id = match[1];
+        return SpecificTimeReport(id);
+      }
+
       return `<h1 class="text-xl text-shade-800 p-4">404 Page does not exist</h1>`;
   }
 }
+
