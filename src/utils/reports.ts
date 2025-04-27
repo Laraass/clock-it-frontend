@@ -120,11 +120,31 @@ export async function deleteTimeReport(reportId: string) {
 }
 
 // Fetch specific time report
-export async function getTimeReportById(id: string) {
-  const response = await fetch(`https://clock-it-pd7b.onrender.com/api/reports/${id}`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch specific time report");
+export async function getSpecificTimeReport(reportId: string) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    throw new Error("User not authenticated.");
   }
-  const data = await response.json();
-  return data;
+
+  try {
+    const response = await fetch(`https://clock-it-pd7b.onrender.com/api/reports/${reportId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      return data; // Return the specific report
+    } else {
+      throw new Error(data.message || "Failed to fetch time report.");
+    }
+  } catch (error: any) {
+    console.error("Error fetching specific time report:", error.message);
+    throw error;
+  }
 }
